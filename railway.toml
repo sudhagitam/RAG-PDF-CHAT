@@ -1,0 +1,10 @@
+# railway.toml — deploy config for the Next.js API service
+[build]
+builder = "nixpacks"
+
+[deploy]
+startCommand = "npm run build && npm start"
+healthcheckPath = "/api/health"
+healthcheckTimeout = 60
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3

@@ -1,0 +1,18 @@
+# qdrant.railway.toml
+# Create a SEPARATE Railway service for Qdrant using this config.
+# Set the Docker image to: qdrant/qdrant:latest
+# Add a volume mounted at: /qdrant/storage
+
+# Steps to deploy Qdrant on Railway:
+# 1. New project → Deploy from Docker image
+# 2. Image: qdrant/qdrant:latest
+# 3. Volumes → Add volume → Mount path: /qdrant/storage
+# 4. Variables → Add: QDRANT__SERVICE__API_KEY=your_secret_key
+# 5. Copy the public domain → set as QDRANT_URL in your Next.js service
+
+[deploy]
+image = "qdrant/qdrant:latest"
+
+[[volumes]]
+source = "qdrant-storage"
+target = "/qdrant/storage"
