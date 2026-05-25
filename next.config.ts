@@ -1,9 +1,11 @@
+import path from 'path';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   turbopack: {
-    root: './',
+    root: path.join(process.cwd()),
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
