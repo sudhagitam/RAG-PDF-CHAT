@@ -11,7 +11,7 @@ require('dotenv').config({ path: '.env.local' });
 const { QdrantClient } = require('@qdrant/js-client-rest');
 
 const COLLECTION = process.env.QDRANT_COLLECTION || 'rag_documents';
-const VECTOR_SIZE = 1536;
+const VECTOR_SIZE = 384;  // changed from 1536
 
 async function main() {
   const client = new QdrantClient({

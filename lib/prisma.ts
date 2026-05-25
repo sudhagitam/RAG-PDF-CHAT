@@ -1,36 +1,19 @@
-/*// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type PrismaClientType = any;
-
-let prismaInstance: PrismaClientType | null = null;
-
-function getPrisma(): PrismaClientType {
-  if (!prismaInstance) {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const { PrismaClient } = require('@prisma/client');
-    prismaInstance = new PrismaClient({
-      datasources: { db: { url: process.env.DATABASE_URL } },
-      log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
-    });
-  }
-  return prismaInstance;
-}
-
-export const prisma = getPrisma();
-*/
-
 import { PrismaClient } from '@prisma/client';
+import { PrismaPg } from '@prisma/adapter-pg';
 
-let prismaInstance: PrismaClient;
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
 
-const getPrisma = () => {
-  if (!prismaInstance) {
-    prismaInstance = new PrismaClient({
-      log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
-    });
-  }
-  return prismaInstance;
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient | undefined;
 };
 
-export const prisma = getPrisma();
+export const prisma =
+  globalForPrisma.prisma ??
+  new PrismaClient({
+    adapter,
+    log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
+  });
 
-export default prisma;
+if (process.env.NODE_ENV !== 'production') {
+  globalForPrisma.prisma = prisma;
+}

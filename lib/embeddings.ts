@@ -1,28 +1,41 @@
-import OpenAI from 'openai';
+// Free local embeddings using @xenova/transformers
+// No API key needed, runs entirely on your machine
+// 384-dim vectors, stored in Qdrant
 
-let openai: OpenAI | null = null;
+let pipeline: any = null;
 
-function getOpenAI(): OpenAI {
-  if (!openai) {
-    openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
+async function getEmbedder() {
+  if (!pipeline) {
+    const { pipeline: createPipeline, env } = await import('@xenova/transformers');
+    // Cache models locally
+    env.cacheDir = './.cache/transformers';
+    pipeline = await createPipeline(
+      'feature-extraction',
+      'Xenova/all-MiniLM-L6-v2'
+    );
   }
-  return openai;
+  return pipeline;
 }
 
 export async function embedText(text: string): Promise<number[]> {
-  const client = getOpenAI();
-  const response = await client.embeddings.create({
-    model: 'text-embedding-3-small',
-    input: text.slice(0, 8000), // safety trim
+  const embedder = await getEmbedder();
+  const output = await embedder(text.slice(0, 4000), {
+    pooling: 'mean',
+    normalize: true,
   });
-  return response.data[0].embedding;
+  return Array.from(output.data) as number[];
 }
 
 export async function embedBatch(texts: string[]): Promise<number[][]> {
-  const client = getOpenAI();
-  const response = await client.embeddings.create({
-    model: 'text-embedding-3-small',
-    input: texts.map((t) => t.slice(0, 8000)),
-  });
-  return response.data.map((d) => d.embedding);
+  const embedder = await getEmbedder();
+  const results: number[][] = [];
+  // Process one at a time to avoid memory pressure
+  for (const text of texts) {
+    const output = await embedder(text.slice(0, 4000), {
+      pooling: 'mean',
+      normalize: true,
+    });
+    results.push(Array.from(output.data) as number[]);
+  }
+  return results;
 }
