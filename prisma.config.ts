@@ -3,7 +3,7 @@ import { defineConfig } from 'prisma/config';
 import 'dotenv/config';
 
 export default defineConfig({
-  earlyAccess: true,
+//earlyAccess: true,
   schema: path.join(import.meta.dirname, 'prisma/schema.prisma'),
 
    datasource: {
