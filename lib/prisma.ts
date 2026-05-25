@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+/*// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type PrismaClientType = any;
 
 let prismaInstance: PrismaClientType | null = null;
@@ -16,3 +16,21 @@ function getPrisma(): PrismaClientType {
 }
 
 export const prisma = getPrisma();
+*/
+
+import { PrismaClient } from '@prisma/client';
+
+let prismaInstance: PrismaClient;
+
+const getPrisma = () => {
+  if (!prismaInstance) {
+    prismaInstance = new PrismaClient({
+      log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
+    });
+  }
+  return prismaInstance;
+};
+
+export const prisma = getPrisma();
+
+export default prisma;

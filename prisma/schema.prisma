@@ -42,3 +42,8 @@ model ChatMessage {
 
   @@index([sessionId])
 }
+
+datasource db {
+  provider = "postgresql"
+  url      = env("postgresql://postgres:xJjKFkUPJTJfnJJRNQbxEXsFUzdFRTQd@zephyr.proxy.rlwy.net:46031/railway")
+}
