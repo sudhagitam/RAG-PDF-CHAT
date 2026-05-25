@@ -10,13 +10,14 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^7.4.1",
-    "@prisma/client": "^7.8.0",
+    "@prisma/client": "^5.22.0",
     "@qdrant/js-client-rest": "^1.18.0",
     "dotenv": "^17.4.2",
     "groq-sdk": "^1.2.0",
     "next": "16.2.6",
     "openai": "^6.39.0",
     "pdf-parse": "^2.4.5",
+    "prisma": "^5.22.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "uuid": "^14.0.0"
@@ -30,7 +31,6 @@
     "@types/uuid": "^10.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
-    "prisma": "^7.8.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
