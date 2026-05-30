@@ -262,7 +262,7 @@ export default function ChatPage() {
           </p>
           {documents.length === 0 && (
             <p style={{ fontSize: '0.8rem', color: 'var(--text-3)', padding: '0.5rem 0.25rem' }}>
-              No documents yet. Upload PDFs to get started.
+              No documents yet here. Upload PDFs to get started.
             </p>
           )}
           {documents.map(doc => (
